@@ -1,0 +1,388 @@
+/* 基本的なリセットとフォント設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Mochiy Pop One', cursive, sans-serif;
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: #5d4037;
+    line-height: 1.5;
+}
+
+/* ゲームコンテナ */
+.game-container {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+h1 {
+    color: #ff6b9e;
+    margin-bottom: 10px;
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+    color: #5d4037;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+/* ゲームエリア */
+.game-area {
+    margin-top: 20px;
+}
+
+/* 形のコンテナ */
+.shapes-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* 形のスタイル */
+.shape {
+    width: 70px;
+    height: 70px;
+    cursor: grab;
+    transition: transform 0.2s, opacity 0.3s;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    flex-shrink: 0;
+}
+
+.shape:active {
+    cursor: grabbing;
+    transform: scale(1.1);
+}
+
+/* 基本の形 */
+.shape[data-shape="circle"] {
+    background-color: #ff9e7d;
+    border-radius: 50%;
+}
+
+.shape[data-shape="square"] {
+    background-color: #8ac4d0;
+    width: 55px;
+    height: 55px;
+    margin: 3px;
+}
+
+.shape[data-shape="triangle"] {
+    width: 0;
+    height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-bottom: 60px solid #ffd166;
+    background: none;
+}
+
+/* 新しい形 */
+.shape[data-shape="star"] {
+    background: none;
+    position: relative;
+    width: 60px;
+    height: 60px;
+}
+
+.shape[data-shape="star"]::before {
+    content: '★';
+    position: absolute;
+    font-size: 45px;
+    color: #ffd700;
+    line-height: 1;
+    text-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+.shape[data-shape="heart"] {
+    background: none;
+    position: relative;
+    width: 45px;
+    height: 45px;
+    transform: rotate(-45deg);
+}
+
+.shape[data-shape="heart"]::before,
+.shape[data-shape="heart"]::after {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 38px;
+    background-color: #ff6b9e;
+    border-radius: 30px 30px 0 0;
+}
+
+.shape[data-shape="heart"]::before {
+    left: 23px;
+    transform: rotate(-45deg);
+    transform-origin: 0 100%;
+}
+
+.shape[data-shape="heart"]::after {
+    left: 0;
+    transform: rotate(45deg);
+    transform-origin: 100% 100%;
+}
+
+.shape[data-shape="diamond"] {
+    background-color: #06d6a0;
+    transform: rotate(45deg);
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+}
+
+.shape[data-shape="pentagon"] {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    background: #9d4edd;
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+}
+
+/* ターゲットのスタイル */
+.targets-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 40px 0;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.target {
+    width: 80px;
+    height: 80px;
+    border: 3px dashed #5d4037;
+    border-radius: 10px;
+    margin: 10px;
+    transition: all 0.3s;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.3);
+    flex-shrink: 0;
+}
+
+.target::after {
+    content: attr(data-shape);
+    position: absolute;
+    bottom: -25px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #5d4037;
+    opacity: 0.7;
+}
+
+.target[data-shape="circle"]::after {
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    background-color: #ff9e7d;
+}
+
+.target[data-shape="square"]::after {
+    width: 50%;
+    height: 50%;
+    background-color: #8ac4d0;
+    transform: rotate(45deg);
+}
+
+.target[data-shape="triangle"]::after {
+    width: 0;
+    height: 0;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-bottom: 45px solid #a05cdf;
+    background-color: transparent;
+    margin-top: 10px;
+}
+
+/* マッチしたターゲットのスタイル */
+.target.matched {
+    border-style: solid;
+    background-color: rgba(76, 175, 80, 0.2);
+    transform: scale(0.95);
+}
+
+/* ドラッグ中のスタイル */
+.shape.dragging {
+    opacity: 0.7;
+    transform: scale(1.1);
+}
+
+/* ターゲットに重なった時のスタイル */
+.target.highlight {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+/* 正解時のスタイル */
+.target.correct {
+    border-color: #4caf50;
+    animation: pulse 0.5s;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* フィードバックメッセージ */
+.feedback {
+    margin: 20px 0;
+    padding: 10px;
+    font-size: 1.2rem;
+    min-height: 2em;
+    color: #5d4037;
+}
+
+/* リセットボタン */
+.reset-button {
+    background: linear-gradient(45deg, #ff6b9e, #ff9e7d);
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-top: 5px;
+    font-family: 'Mochiy Pop One', cursive, sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s;
+}
+
+.reset-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.reset-button:active {
+    transform: translateY(1px);
+}
+
+/* パーティクルエフェクト */
+.particle {
+    position: fixed;
+    pointer-events: none;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+    body {
+        padding: 5px;
+    }
+    
+    .game-container {
+        padding: 15px 10px;
+        margin: 0;
+        border-radius: 15px;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 5px;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+    
+    .shapes-container, .targets-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        gap: 8px;
+        justify-items: center;
+        margin: 8px 0;
+        padding: 5px;
+        overflow-x: hidden;
+    }
+}
+
+/* 紙吹雪エフェクト用 */
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background-color: #f00;
+    opacity: 0.7;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* パーティクルエフェクト */
+.particle {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background-color: #4caf50;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1000;
+    transform-origin: center;
+    will-change: transform, opacity;
+}
+
+/* 紙吹雪エフェクト */
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    opacity: 0;
+    z-index: 1000;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+/* シェイクアニメーション */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* パルスアニメーション */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* モバイル向けの調整 */
+@media (max-width: 480px) {
+    .particle, .confetti {
+        width: 8px;
+        height: 8px;
+    }
+}
