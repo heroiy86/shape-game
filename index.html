@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>🎨 かたちあわせゲーム</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
@@ -10,7 +10,7 @@
 <body>
     <div class="game-container">
         <h1>🎨 かたちあわせゲーム</h1>
-        <p class="subtitle">おなじ かたちを あつめてね！</p>
+        <p class="subtitle">にている かたちを あつめてね！</p>
         
         <!-- スコアとレベルの表示 -->
         <div class="game-stats">
@@ -19,14 +19,16 @@
         </div>
         
         <div class="game-area">
-            <!-- 形のブロックが表示されるエリア -->
-            <div class="shapes-container" id="shapes-container">
-                <!-- 形はJavaScriptで動的に生成 -->
-            </div>
-            
-            <!-- 形をはめる穴が表示されるエリア -->
-            <div class="targets-container" id="targets-container">
-                <!-- ターゲットはJavaScriptで動的に生成 -->
+            <!-- ゲームボード -->
+            <div id="game-board" class="game-board">
+                <!-- 形のコンテナ -->
+                <div class="shapes-container" id="shapes-container">
+                    <!-- 形がここに動的に追加されます -->
+                </div>
+                <!-- ターゲットのコンテナ -->
+                <div class="targets-container" id="targets-container">
+                    <!-- ターゲットがここに動的に追加されます -->
+                </div>
             </div>
             
             <!-- フィードバックメッセージ -->
@@ -40,8 +42,39 @@
     </div>
     
     <!-- 効果音 -->
-    <audio id="success-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.wav" preload="auto"></audio>
-    <audio id="error-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.wav" preload="auto"></audio>
+    <audio id="success-sound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3" type="audio/mpeg">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.wav" type="audio/wav">
+        お使いのブラウザはオーディオをサポートしていません。
+    </audio>
+    <audio id="error-sound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" type="audio/mpeg">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.wav" type="audio/wav">
+        お使いのブラウザはオーディオをサポートしていません。
+    </audio>
+    <script>
+        // ページ読み込み時にオーディオをプリロード
+        window.addEventListener('load', function() {
+            try {
+                const successSound = document.getElementById('success-sound');
+                const errorSound = document.getElementById('error-sound');
+                
+                // オーディオをロード
+                successSound.load();
+                errorSound.load();
+                
+                // エラーハンドリング
+                successSound.onerror = function() {
+                    console.error('Success sound failed to load');
+                };
+                errorSound.onerror = function() {
+                    console.error('Error sound failed to load');
+                };
+            } catch (e) {
+                console.error('Audio initialization error:', e);
+            }
+        });
+    </script>
     
     <script src="game.js"></script>
 </body>

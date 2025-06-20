@@ -50,45 +50,158 @@ h1 {
     margin-top: 20px;
 }
 
+/* ゲームボードのスタイル */
+.game-board {
+    display: flex;
+    flex-direction: column;
+    height: 500px; /* Fixed height for the game area */
+    margin: 0 auto 20px;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    touch-action: none;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
 /* 形のコンテナ */
 .shapes-container {
+    flex: 1;
     display: flex;
-    justify-content: space-around;
-    margin-bottom: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 15px;
+}
+
+/* ターゲットのコンテナ */
+.targets-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #e0e0e0;
+    border-top: 2px solid #ccc;
+    min-height: 150px; /* Fixed height for targets area */
     flex-wrap: wrap;
     gap: 15px;
 }
 
 /* 形のスタイル */
 .shape {
-    width: 70px;
-    height: 70px;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
     cursor: grab;
-    transition: transform 0.2s, opacity 0.3s;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* ターゲットのスタイル */
+.target {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+/* ターゲットのスタイル */
+.target {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.target.highlight {
+    background-color: rgba(255, 255, 200, 0.8);
+    border-color: #ffeb3b;
+}
+
+.target.matched {
+    border-style: solid;
+    background-color: rgba(200, 255, 200, 0.8);
+}
+
+/* 形のコンテナスタイル */
+.shape {
+    width: 100%;
+    height: 100%;
+    cursor: move;
+    transition: all 0.3s ease;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 5px;
-    flex-shrink: 0;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .shape:active {
     cursor: grabbing;
-    transform: scale(1.1);
 }
 
-/* 基本の形 */
-.shape[data-shape="circle"] {
-    background-color: #ff9e7d;
+.shape.dragging {
+    opacity: 0.8;
+    transform: scale(1.1);
+    z-index: 1000;
+    transition: none;
+}
+
+.shape:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    border-color: #ff6b9e;
+}
+
+.shape.dragging {
+    opacity: 0.9;
+    transform: scale(1.1) translateY(-5px);
+    z-index: 100;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    border-color: #ff6b9e;
+}
+
+/* 各図形の基本スタイル */
+.shape::before {
+    content: '';
+    position: absolute;
+    transition: all 0.3s ease;
     border-radius: 50%;
 }
 
+.shape[data-shape="circle"] {
+    background-color: #4CAF50;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    border: 3px solid #2E7D32;
+}
+
 .shape[data-shape="square"] {
-    background-color: #8ac4d0;
-    width: 55px;
-    height: 55px;
-    margin: 3px;
+    background-color: #2196F3;
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    border: 3px solid #0D47A1;
 }
 
 .shape[data-shape="triangle"] {
@@ -142,7 +255,7 @@ h1 {
 }
 
 .shape[data-shape="heart"]::after {
-    left: 0;
+    left: 15px;
     transform: rotate(45deg);
     transform-origin: 100% 100%;
 }
@@ -159,32 +272,91 @@ h1 {
     position: relative;
     width: 60px;
     height: 60px;
-    background: #9d4edd;
+    background-color: #9d4edd;
     clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
 }
 
-/* ターゲットのスタイル */
-.targets-container {
-    display: flex;
-    justify-content: space-around;
-    margin: 40px 0;
-    flex-wrap: wrap;
-    gap: 20px;
+.shape[data-shape="star"] {
+    background-color: #FFC107;
+    width: 60px;
+    height: 60px;
+    position: relative;
+    clip-path: polygon(
+        50% 0%,
+        61% 35%,
+        98% 35%,
+        68% 57%,
+        79% 91%,
+        50% 70%,
+        21% 91%,
+        32% 57%,
+        2% 35%,
+        39% 35%
+    );
 }
 
+.shape[data-shape="star"]::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    right: 3px;
+    bottom: 3px;
+    background-color: #FFA000;
+    clip-path: polygon(
+        50% 0%,
+        61% 35%,
+        98% 35%,
+        68% 57%,
+        79% 91%,
+        50% 70%,
+        21% 91%,
+        32% 57%,
+        2% 35%,
+        39% 35%
+    );
+}
+
+/* ターゲットを表示するエリア */
 .target {
+    position: absolute;
     width: 80px;
     height: 80px;
-    border: 3px dashed #5d4037;
+    border: 2px dashed #999;
     border-radius: 10px;
-    margin: 10px;
-    transition: all 0.3s;
-    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.3);
-    flex-shrink: 0;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-sizing: border-box;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 10px;
+}
+
+.target::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(245,245,245,0.9) 100%);
+    z-index: -1;
+}
+
+/* ターゲットの状態 */
+.target.highlight {
+    border-color: #4CAF50;
+    background-color: rgba(76, 175, 80, 0.1);
+    transform: scale(1.05);
+}
+
+.target.matched {
+    border-color: #4caf50;
+    background-color: rgba(76, 175, 80, 0.15);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
 }
 
 .target::after {
@@ -234,12 +406,14 @@ h1 {
 .shape.dragging {
     opacity: 0.7;
     transform: scale(1.1);
+    z-index: 100;
+    pointer-events: none;
 }
 
 /* ターゲットに重なった時のスタイル */
 .target.highlight {
     transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.2);
 }
 
 /* 正解時のスタイル */
@@ -329,6 +503,51 @@ h1 {
     }
 }
 
+@media (max-width: 600px) {
+    .shapes-container, .targets-container {
+        padding: 15px;
+        gap: 15px;
+        justify-content: center;
+    }
+    
+    .targets-container {
+        min-height: 200px;
+        position: relative;
+    }
+    
+    .shape {
+        width: 70px;
+        height: 70px;
+        margin: 5px;
+        font-size: 0.9em;
+    }
+    
+    .target {
+        width: 70px;
+        height: 70px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 400px) {
+    .shapes-container, .targets-container {
+        padding: 10px;
+        gap: 10px;
+    }
+    
+    .shape {
+        width: 60px;
+        height: 60px;
+        margin: 4px;
+    }
+    
+    .target {
+        width: 60px;
+        height: 60px;
+        padding: 6px;
+    }
+}
+
 /* 紙吹雪エフェクト用 */
 .confetti {
     position: fixed;
@@ -380,9 +599,52 @@ h1 {
 }
 
 /* モバイル向けの調整 */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .shapes-container, .targets-container {
+        gap: 8px;
+        padding: 0 5px;
+    }
+    
+    .shape {
+        width: 60px;
+        height: 60px;
+        margin: 5px;
+        border-radius: 12px;
+    }
+    
+    .target {
+        width: 80px;
+        height: 80px;
+        margin: 5px;
+    }
+    
     .particle, .confetti {
-        width: 8px;
-        height: 8px;
+        width: 6px;
+        height: 6px;
+    }
+    
+    /* フィードバックメッセージのフォントサイズを調整 */
+    .feedback {
+        font-size: 1rem;
+        padding: 10px;
+        text-align: center;
+    }
+    
+    /* スコアとレベルの表示を調整 */
+    .score-container {
+        font-size: 1rem;
+        margin: 8px 0;
+        text-align: center;
+    }
+    
+    /* リセットボタンを調整 */
+    .reset-button {
+        padding: 10px 20px;
+        font-size: 1rem;
+        margin: 10px 0;
     }
 }
