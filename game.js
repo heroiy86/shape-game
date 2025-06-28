@@ -114,8 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Set up event listeners
     function setupEventListeners() {
-        // Temporarily disable drag and drop event listeners for layout verification
-        /*
         // Add event listeners to the document for mouse events
         document.addEventListener('mousemove', handleDragMove);
         document.addEventListener('mouseup', handleDragEnd);
@@ -129,11 +127,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add touch event listeners to document
         document.addEventListener('touchmove', handleTouchMove, { passive: false });
         document.addEventListener('touchend', handleTouchEnd);
-        */
     }
     
     // Handle drag start (mouse)
-    /*
     function handleDragStart(e) {
         const shape = e.target.closest('.shape');
         if (!shape) return;
@@ -152,10 +148,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         startDrag(shape, clientX, clientY);
     }
-    */
     
     // Handle touch start
-    /*
     function handleTouchStart(e) {
         const shape = e.target.closest('.shape');
         if (!shape) return;
@@ -177,10 +171,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Start dragging with the shape centered on the touch point
         startDrag(shape, clientX, clientY);
     }
-    */
     
     // Start dragging
-    /*
     function startDrag(element, clientX, clientY) {
         if (dragClone) return false;
         
@@ -228,20 +220,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
         return true;
     }
-    */
     
     // Handle drag move (mouse)
-    /*
     function handleDragMove(e) {
         if (!dragClone) return;
         
         e.preventDefault();
         moveDrag(e.clientX, e.clientY);
     }
-    */
     
     // Handle touch move
-    /*
     function handleTouchMove(e) {
         if (!dragClone) return;
         
@@ -249,10 +237,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const touch = e.touches[0];
         moveDrag(touch.clientX, touch.clientY);
     }
-    */
     
     // Move the dragged item
-    /*
     function moveDrag(clientX, clientY) {
         if (!dragClone) return;
         
@@ -274,20 +260,16 @@ document.addEventListener('DOMContentLoaded', () => {
             target.style.boxShadow = isOver ? '0 0 10px 5px rgba(0, 150, 255, 0.5)' : 'none';
         });
     }
-    */
     
     // Handle drag end (mouse)
-    /*
     function handleDragEnd(e) {
         if (!dragClone) return;
         
         e.preventDefault();
         endDrag(e.clientX, e.clientY);
     }
-    */
     
     // Handle touch end
-    /*
     function handleTouchEnd(e) {
         if (!dragClone) return;
         
@@ -295,10 +277,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const touch = e.changedTouches[0];
         endDrag(touch.clientX, touch.clientY);
     }
-    */
     
     // End dragging
-    /*
     function endDrag(clientX, clientY) {
         if (!dragClone || !draggedItem) return;
         
@@ -311,15 +291,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const targets = document.elementsFromPoint(clientX, clientY);
         const target = targets.find(el => el.classList.contains('target'));
         
-        if (target && checkMatch(target)) {
-            // Don't reset drag here, let handleCorrectMatch handle it
-            handleCorrectMatch(target);
-        } else {
-            handleIncorrectMatch();
-            resetDrag();
-        }
+        // Temporarily disable match check and feedback for basic drag/drop test
+        // if (target && checkMatch(target)) {
+        //     handleCorrectMatch(target);
+        // } else {
+        //     handleIncorrectMatch();
+        //     resetDrag();
+        // }
+        resetDrag(); // Always reset for now
     }
-    */
     
     // Check if shape matches target
     /*
@@ -430,7 +410,6 @@ document.addEventListener('DOMContentLoaded', () => {
     */
     
     // Reset drag state
-    /*
     function resetDrag() {
         if (dragClone) {
             if (dragClone.parentNode) {
@@ -459,7 +438,6 @@ document.addEventListener('DOMContentLoaded', () => {
             draggedItem = null;
         }
     }
-    */
     
     // Create confetti effect
     function createConfetti() {
