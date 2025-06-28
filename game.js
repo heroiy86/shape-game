@@ -385,8 +385,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     feedbackElement.style.color = '#4CAF50';
                 }
             } finally {
-                // Always reset the drag state after animation
-                resetDrag();
+                // Always clean up the drag state after animation
+                cleanupDragState();
             }
         }, 10);
     }
@@ -406,8 +406,20 @@ document.addEventListener('DOMContentLoaded', () => {
             if (draggedItem) {
                 draggedItem.style.animation = '';
                 draggedItem.style.pointerEvents = 'auto';
+                // Return to original position
+                if (originalPosition && originalPosition.parent) {
+                    draggedItem.style.visibility = 'visible';
+                    draggedItem.style.position = '';
+                    draggedItem.style.left = '';
+                    draggedItem.style.top = '';
+                    draggedItem.style.transform = '';
+                    draggedItem.style.transition = '';
+                    if (draggedItem.parentNode !== originalPosition.parent) {
+                        originalPosition.parent.appendChild(draggedItem);
+                    }
+                }
             }
-            resetDrag();
+            cleanupDragState();
         }, 500);
         
         // Update feedback
@@ -415,34 +427,16 @@ document.addEventListener('DOMContentLoaded', () => {
         feedbackElement.style.color = '#F44336';
     }
     
-    // Reset drag state
-    function resetDrag() {
+    // Clean up drag state
+    function cleanupDragState() {
         if (dragClone) {
             if (dragClone.parentNode) {
                 document.body.removeChild(dragClone);
             }
             dragClone = null;
         }
-            
-        if (draggedItem) {
-            // Only reset position if the shape wasn't matched
-            if (originalPosition && originalPosition.parent) {
-                // Make sure the shape is visible and interactive
-                draggedItem.style.visibility = 'visible';
-                draggedItem.style.position = '';
-                draggedItem.style.left = '';
-                draggedItem.style.top = '';
-                draggedItem.style.transform = '';
-                draggedItem.style.pointerEvents = 'auto';
-                draggedItem.style.transition = '';
-                    
-                // Only append if not already attached to a parent
-                if (draggedItem.parentNode !== originalPosition.parent) {
-                    originalPosition.parent.appendChild(draggedItem);
-                }
-            }
-            draggedItem = null;
-        }
+        draggedItem = null;
+        originalPosition = null;
     }
     
     // Create confetti effect
