@@ -30,6 +30,8 @@ body {
     margin: 10px;
     box-sizing: border-box;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 h1 {
@@ -54,7 +56,7 @@ h1 {
 .game-board {
     display: flex;
     flex-direction: column;
-    height: 500px; /* Fixed height for the game area */
+    flex: 1; /* Allow game-board to grow and shrink */
     margin: 0 auto 20px;
     max-width: 100%;
     width: 100%;
@@ -85,7 +87,6 @@ h1 {
     padding: 20px;
     background-color: #e0e0e0;
     border-top: 2px solid #ccc;
-    min-height: 150px; /* Fixed height for targets area */
     flex-wrap: wrap;
     gap: 15px;
 }
@@ -511,7 +512,6 @@ h1 {
     }
     
     .targets-container {
-        min-height: 200px;
         position: relative;
     }
     
