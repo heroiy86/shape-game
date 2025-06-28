@@ -99,54 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         shape.draggable = true;
         shape.dataset.shape = shapeType;
         
-        // Style the shape
-        shape.style.backgroundColor = '#fff';
-        shape.style.borderRadius = '10px';
-        shape.style.display = 'flex';
-        shape.style.justifyContent = 'center';
-        shape.style.alignItems = 'center';
-        shape.style.cursor = 'grab';
-        shape.style.position = 'relative';
-        
-        // Create inner shape
-        const innerShape = document.createElement('div');
-        innerShape.className = `inner-shape ${shapeType}`;
-        
-        // Style based on shape type
-        innerShape.style.width = '60%';
-        innerShape.style.height = '60%';
-        innerShape.style.backgroundColor = COLORS[index % COLORS.length];
-        
-        switch(shapeType) {
-            case 'circle':
-                innerShape.style.borderRadius = '50%';
-                break;
-            case 'square':
-                innerShape.style.borderRadius = '5px';
-                break;
-            case 'triangle':
-                innerShape.style.width = '0';
-                innerShape.style.height = '0';
-                innerShape.style.backgroundColor = 'transparent';
-                innerShape.style.borderLeft = '20px solid transparent';
-                innerShape.style.borderRight = '20px solid transparent';
-                innerShape.style.borderBottom = `40px solid ${COLORS[index % COLORS.length]}`;
-                break;
-            case 'star':
-                innerShape.style.clipPath = 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)';
-                break;
-            case 'heart':
-                innerShape.style.background = 'none';
-                innerShape.innerHTML = '❤️';
-                innerShape.style.fontSize = '40px';
-                innerShape.style.lineHeight = '40px';
-                break;
-            case 'diamond':
-                innerShape.style.transform = 'rotate(45deg)';
-                break;
-        }
-        
-        shape.appendChild(innerShape);
+        // Append to container
         shapesContainer.appendChild(shape);
     }
     
@@ -156,17 +109,13 @@ document.addEventListener('DOMContentLoaded', () => {
         target.className = 'target';
         target.dataset.shape = shapeType;
         
-        // Style the target
-        target.style.display = 'flex';
-        target.style.justifyContent = 'center';
-        target.style.alignItems = 'center';
-        target.style.position = 'relative';
-        
         targetsContainer.appendChild(target);
     }
     
     // Set up event listeners
     function setupEventListeners() {
+        // Temporarily disable drag and drop event listeners for layout verification
+        /*
         // Add event listeners to the document for mouse events
         document.addEventListener('mousemove', handleDragMove);
         document.addEventListener('mouseup', handleDragEnd);
@@ -180,9 +129,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add touch event listeners to document
         document.addEventListener('touchmove', handleTouchMove, { passive: false });
         document.addEventListener('touchend', handleTouchEnd);
+        */
     }
     
     // Handle drag start (mouse)
+    /*
     function handleDragStart(e) {
         const shape = e.target.closest('.shape');
         if (!shape) return;
@@ -201,8 +152,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         startDrag(shape, clientX, clientY);
     }
+    */
     
     // Handle touch start
+    /*
     function handleTouchStart(e) {
         const shape = e.target.closest('.shape');
         if (!shape) return;
@@ -224,8 +177,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Start dragging with the shape centered on the touch point
         startDrag(shape, clientX, clientY);
     }
+    */
     
     // Start dragging
+    /*
     function startDrag(element, clientX, clientY) {
         if (dragClone) return false;
         
@@ -273,16 +228,20 @@ document.addEventListener('DOMContentLoaded', () => {
         
         return true;
     }
+    */
     
     // Handle drag move (mouse)
+    /*
     function handleDragMove(e) {
         if (!dragClone) return;
         
         e.preventDefault();
         moveDrag(e.clientX, e.clientY);
     }
+    */
     
     // Handle touch move
+    /*
     function handleTouchMove(e) {
         if (!dragClone) return;
         
@@ -290,8 +249,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const touch = e.touches[0];
         moveDrag(touch.clientX, touch.clientY);
     }
+    */
     
     // Move the dragged item
+    /*
     function moveDrag(clientX, clientY) {
         if (!dragClone) return;
         
@@ -313,16 +274,20 @@ document.addEventListener('DOMContentLoaded', () => {
             target.style.boxShadow = isOver ? '0 0 10px 5px rgba(0, 150, 255, 0.5)' : 'none';
         });
     }
+    */
     
     // Handle drag end (mouse)
+    /*
     function handleDragEnd(e) {
         if (!dragClone) return;
         
         e.preventDefault();
         endDrag(e.clientX, e.clientY);
     }
+    */
     
     // Handle touch end
+    /*
     function handleTouchEnd(e) {
         if (!dragClone) return;
         
@@ -330,8 +295,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const touch = e.changedTouches[0];
         endDrag(touch.clientX, touch.clientY);
     }
+    */
     
     // End dragging
+    /*
     function endDrag(clientX, clientY) {
         if (!dragClone || !draggedItem) return;
         
@@ -352,8 +319,10 @@ document.addEventListener('DOMContentLoaded', () => {
             resetDrag();
         }
     }
+    */
     
     // Check if shape matches target
+    /*
     function checkMatch(target) {
         if (!draggedItem) return false;
         
@@ -362,8 +331,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         return shapeType === targetType;
     }
+    */
     
     // Handle correct match
+    /*
     function handleCorrectMatch(target) {
         if (!draggedItem) return;
         
@@ -430,8 +401,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 10);
     }
+    */
     
     // Handle incorrect match
+    /*
     function handleIncorrectMatch() {
         if (!draggedItem) return;
         
@@ -454,8 +427,10 @@ document.addEventListener('DOMContentLoaded', () => {
         feedbackElement.textContent = 'Try again!';
         feedbackElement.style.color = '#F44336';
     }
+    */
     
     // Reset drag state
+    /*
     function resetDrag() {
         if (dragClone) {
             if (dragClone.parentNode) {
@@ -484,6 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
             draggedItem = null;
         }
     }
+    */
     
     // Create confetti effect
     function createConfetti() {
