@@ -82,18 +82,24 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Create shapes and targets
     function createShapesAndTargets(shapes) {
-        // Shuffle the shapes
+        // Shuffle the shapes for display
         const shuffledShapes = [...shapes].sort(() => Math.random() - 0.5);
+        // Shuffle the targets for display
+        const shuffledTargets = [...shapes].sort(() => Math.random() - 0.5);
         
-        // Create shapes and targets
-        shapes.forEach((shapeType, index) => {
-            createShape(shapeType, index);
-            createTarget(shapeType, index);
+        // Create shapes
+        shuffledShapes.forEach((shapeType, index) => {
+            createShape(shapeType);
+        });
+        
+        // Create targets
+        shuffledTargets.forEach((shapeType, index) => {
+            createTarget(shapeType);
         });
     }
     
     // Create a draggable shape
-    function createShape(shapeType, index) {
+    function createShape(shapeType) {
         const shape = document.createElement('div');
         shape.className = 'shape';
         shape.draggable = true;
@@ -104,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Create a target drop zone
-    function createTarget(shapeType, index) {
+    function createTarget(shapeType) {
         const target = document.createElement('div');
         target.className = 'target';
         target.dataset.shape = shapeType;
@@ -127,6 +133,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add touch event listeners to document
         document.addEventListener('touchmove', handleTouchMove, { passive: false });
         document.addEventListener('touchend', handleTouchEnd);
+
+        // Reset button event listener
+        document.getElementById('reset-button').addEventListener('click', () => {
+            score = 0;
+            level = 1;
+            gameActive = true;
+            initGame();
+        });
     }
     
     // Handle drag start (mouse)
