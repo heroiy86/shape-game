@@ -291,18 +291,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const targets = document.elementsFromPoint(clientX, clientY);
         const target = targets.find(el => el.classList.contains('target'));
         
-        // Temporarily disable match check and feedback for basic drag/drop test
-        // if (target && checkMatch(target)) {
-        //     handleCorrectMatch(target);
-        // } else {
-        //     handleIncorrectMatch();
-        //     resetDrag();
-        // }
-        resetDrag(); // Always reset for now
+        if (target && checkMatch(target)) {
+            handleCorrectMatch(target);
+        } else {
+            handleIncorrectMatch();
+            resetDrag();
+        }
     }
     
     // Check if shape matches target
-    /*
     function checkMatch(target) {
         if (!draggedItem) return false;
         
@@ -311,10 +308,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         return shapeType === targetType;
     }
-    */
     
     // Handle correct match
-    /*
     function handleCorrectMatch(target) {
         if (!draggedItem) return;
         
@@ -381,10 +376,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 10);
     }
-    */
     
     // Handle incorrect match
-    /*
     function handleIncorrectMatch() {
         if (!draggedItem) return;
         
@@ -407,7 +400,6 @@ document.addEventListener('DOMContentLoaded', () => {
         feedbackElement.textContent = 'Try again!';
         feedbackElement.style.color = '#F44336';
     }
-    */
     
     // Reset drag state
     function resetDrag() {
