@@ -321,7 +321,6 @@ h1 {
 
 /* ターゲットを表示するエリア */
 .target {
-    position: absolute;
     width: 80px;
     height: 80px;
     border: 2px dashed #999;
@@ -332,7 +331,6 @@ h1 {
     transition: all 0.3s ease;
     background-color: rgba(255, 255, 255, 0.9);
     box-sizing: border-box;
-    transform: translate(-50%, -50%);
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     padding: 10px;
 }
