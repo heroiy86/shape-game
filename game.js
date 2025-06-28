@@ -178,9 +178,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Calculate the shape's position
         const shapeRect = shape.getBoundingClientRect();
         
-        // Set the offset to be the center of the shape
-        offsetX = shapeRect.width / 2;
-        offsetY = shapeRect.height / 2;
+        // Calculate the offset from the touch point to the shape's top-left corner
+        offsetX = clientX - shapeRect.left;
+        offsetY = clientY - shapeRect.top;
         
         // Start dragging with the shape centered on the touch point
         startDrag(shape, clientX, clientY);
