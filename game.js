@@ -202,8 +202,8 @@ document.addEventListener('DOMContentLoaded', () => {
         dragClone.style.height = `${rect.height}px`;
         
         // Position the clone so that the touch point is at the center of the shape
-        dragClone.style.left = `${clientX - offsetX}px`;
-        dragClone.style.top = `${clientY - offsetY}px`;
+        dragClone.style.left = '0px';
+        dragClone.style.top = '0px';
         dragClone.style.margin = '0';
         dragClone.style.pointerEvents = 'none';
         dragClone.style.zIndex = '1000';
