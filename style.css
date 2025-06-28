@@ -87,6 +87,7 @@ h1 {
     padding: 20px;
     background-color: #e0e0e0;
     border-top: 2px solid #ccc;
+    min-height: 150px; /* Ensure minimum height for targets area */
     flex-wrap: wrap;
     gap: 15px;
 }
@@ -512,6 +513,7 @@ h1 {
     }
     
     .targets-container {
+        min-height: 120px; /* Adjusted for mobile */
         position: relative;
     }
     
